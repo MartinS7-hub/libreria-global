@@ -11,10 +11,10 @@ Documento de despliegue y verificación de la Evaluación Global de Programació
 | Dato | Valor |
 |---|---|
 | Aplicación | Librería El Estante (frontend + API) |
-| Repositorio | `«URL-DEL-REPOSITORIO»` |
-| Rama desplegada | `«rama»` |
-| Revisión (commit) | `«hash-corto»` |
-| Fecha y hora del despliegue | `«dd/mm/aaaa hh:mm»` |
+| Repositorio | `https://github.com/MartinS7-hub/libreria-global` |
+| Rama desplegada | `main` |
+| Revisión (commit) | `283c1b0` |
+| Fecha y hora del despliegue | `15/11/2026 20:18` |
 | URL pública del frontend | `«https://...easypanel.host»` |
 | URL pública del backend | `https://app-grupo2-libreria-backend.ldb9fn.easypanel.host` |
 | Swagger de la API | `https://app-grupo2-libreria-backend.ldb9fn.easypanel.host/docs` |
@@ -72,11 +72,12 @@ Variables de entorno del frontend (`Environment`):
 
 | Nombre | Descripción | Ejemplo |
 |---|---|---|
-| `API_UPSTREAM` | Host y puerto internos del backend, **sin** `http://` ni barra final | `grupo5_backend:8000` |
+| `API_UPSTREAM` | Host y puerto internos del backend, **sin** `http://` ni barra final | `app_grup02_libreria_backend:8000` |
 
-El nombre interno depende de la instalación: para el proyecto `grupo5` y el
-servicio `backend`, el valor es `grupo5_backend:8000`. Revisá el nombre exacto en
-Easypanel.
+El nombre interno sigue el patrón `<proyecto>_<servicio>`. En este despliegue el
+proyecto es `app_grup02` y el servicio del backend es `libreria_backend`, por lo
+que el valor es `app_grup02_libreria_backend:8000`. Revisá el nombre exacto en
+Easypanel (pestaña **Resumen** del servicio backend).
 
 ## 4. Proxy y variables (cómo encaja cada pieza)
 
