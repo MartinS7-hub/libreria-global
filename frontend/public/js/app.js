@@ -426,7 +426,7 @@ async function registrarLibro(evento) {
     estado.autorias = [];
     renderAutorias();
     mostrarTexto(exito, `Libro registrado: «${libro.titulo}» (ID ${libro.id}).`);
-    await Promise.all([cargarCatalogo(), cargarLibrosParaVenta()]);
+    await Promise.all([cargarCatalogo(), cargarLibrosDisponibles()]);
   } catch (err) {
     mostrarTexto(error, err.message);
   } finally {
@@ -505,7 +505,9 @@ async function registrarCliente(evento) {
 // 9. Ventas (Ejercicio 3)
 // ============================================================
 
-async function cargarLibrosParaVenta() {
+// Carga una vez el catálogo (hasta 100 libros) y alimenta tanto el selector de
+// la venta como el listado de libros registrados (Ejercicio 2).
+async function cargarLibrosDisponibles() {
   try {
     const libros = await pedir("/libros/?limit=100&offset=0");
     libros.forEach(libro => estado.librosPorId.set(libro.id, libro));
@@ -516,9 +518,34 @@ async function cargarLibrosParaVenta() {
     libros.forEach(libro =>
       agregarOpcion(select, String(libro.id), `${libro.titulo} — ${libro.isbn}`)
     );
+
+    renderLibrosRegistrados(libros);
   } catch (error) {
-    console.warn("[ventas] No se pudo cargar el catálogo para ventas:", error.message);
+    console.warn("[libros] No se pudo cargar el catálogo de libros:", error.message);
   }
+}
+
+// Vista "Libros": listado de los libros que ya están registrados en la API.
+function renderLibrosRegistrados(libros) {
+  const cuerpo = document.getElementById("tabla-libros-cuerpo");
+  cuerpo.replaceChildren();
+
+  libros.forEach(libro => {
+    const fila = document.createElement("tr");
+    [
+      libro.titulo,
+      libro.isbn,
+      libro.editorial ? libro.editorial.nombre : "—",
+      libro.genero ? libro.genero.nombre : "Sin clasificar",
+      nombresAutores(libro) || "—",
+      formatearPrecio(libro.precio)
+    ].forEach(texto => {
+      const celda = document.createElement("td");
+      celda.textContent = texto;
+      fila.appendChild(celda);
+    });
+    cuerpo.appendChild(fila);
+  });
 }
 
 // Verifica el cliente con GET /clientes/{id} y muestra su nombre (consigna).
@@ -854,6 +881,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Cargas iniciales contra la API.
   cargarCatalogosAuxiliares();
   cargarCatalogo();
-  cargarLibrosParaVenta();
+  cargarLibrosDisponibles();
   cargarHistorial();
 });
