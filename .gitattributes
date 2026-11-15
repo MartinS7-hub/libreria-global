@@ -1,0 +1,10 @@
+# Normaliza los finales de línea a LF: los archivos se construyen dentro de
+# contenedores Linux (Docker, Nginx, Python) donde CRLF puede causar problemas.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.zip binary
