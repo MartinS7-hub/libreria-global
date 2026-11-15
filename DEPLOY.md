@@ -142,13 +142,33 @@ pasos, resultado observado y captura en `evidencia/`. Ocultar valores privados.
 
 | Caso | Pasos | Resultado esperado | Estado | Evidencia |
 |---|---|---|---|---|
-| **G-01 · Catálogo** | Buscar por título; avanzar con *Siguiente* (`limit`/`offset`); buscar algo sin coincidencias; *Ver detalle* de un libro | Lista paginada, mensaje de "sin coincidencias" y autores del libro | ☐ | `evidencia/g-01-*.png` |
-| **G-02 · Alta de libro** | Alta con stock, género y autorías; consultar detalle; repetir ISBN | `201` y libro creado; el ISBN repetido devuelve `409` | ☐ | `evidencia/g-02-*.png` |
-| **G-03 · Alta de cliente** | Alta de cliente; recuperarlo por ID; repetir email | `201` y cliente creado; el email repetido devuelve `409` | ☐ | `evidencia/g-03-*.png` |
-| **G-04 · Venta** | Venta con dos renglones; recargar y abrir el detalle | `201`, total correcto y el detalle se conserva tras recargar | ☐ | `evidencia/g-04-*.png` |
-| **G-05 · Precio histórico** | `PATCH /libros/{id}` con nuevo precio; abrir la venta anterior | La venta conserva sus importes originales | ☐ | `evidencia/g-05-*.png` |
-| **G-06 · Rechazo** | Venta con libro inexistente (`409`) y con renglones repetidos (`422`) | Se muestran los mensajes del servidor y el historial no cambia | ☐ | `evidencia/g-06-*.png` |
-| **G-07 · Despliegue** | Build del frontend; abrir la URL por HTTPS; `/api/health/ready`; redesplegar | La imagen se construye, la API responde `200` y los datos siguen tras el redespliegue | ☐ | `evidencia/g-07-*.png` |
+| **G-01 · Catálogo** | Buscar por título; avanzar con *Siguiente* (`limit`/`offset`); buscar algo sin coincidencias; *Ver detalle* de un libro | Lista paginada, mensaje de "sin coincidencias" y autores del libro | ☑ | `evidencia/g-01-catalogo-busqueda.png`, `g-01-catalogo-sin-coincidencias.png`, `g-01-libro-detalle.png` |
+| **G-02 · Alta de libro** | Alta con stock, género y autorías; consultar detalle; repetir ISBN | `201` y libro creado; el ISBN repetido devuelve `409` | ☑ | `evidencia/g-02-alta-libro-201.png`, `g-02-libro-isbn-409.png` |
+| **G-03 · Alta de cliente** | Alta de cliente; recuperarlo por ID; repetir email | `201` y cliente creado; el email repetido devuelve `409` | ☑ | `evidencia/g-03-cliente-201.png`, `g-03-cliente-email-409.png` |
+| **G-04 · Venta** | Venta con dos renglones; recargar y abrir el detalle | `201`, total correcto y el detalle se conserva tras recargar | ☑ | `evidencia/g-04-venta-2-renglones-201.png`, `g-04-venta-detalle.png` |
+| **G-05 · Precio histórico** | `PATCH /libros/{id}` con nuevo precio; abrir la venta anterior | La venta conserva sus importes originales | ☑ | `evidencia/g-05-patch-precio.txt`, `g-05-catalogo-precio-nuevo.png`, `g-05-venta-importes-conservados.png` |
+| **G-06 · Rechazo** | Venta con libro inexistente (`409`) y con renglones repetidos (`422`) | Se muestran los mensajes del servidor y el historial no cambia | ☑ | `evidencia/g-06-rechazos.txt`, `g-06-id-inexistente-404.png`, `g-06-historial-intacto.png` |
+| **G-07 · Despliegue** | Build del frontend; abrir la URL por HTTPS; `/api/health/ready`; redesplegar | La imagen se construye, la API responde `200` y los datos siguen tras el redespliegue | ☑ | `evidencia/g-07-despliegue.txt`, `g-07-datos-tras-redespliegue.png` |
+
+Resultados observados (detalle):
+
+- **G-01**: catálogo paginado con `limit`/`offset`; búsqueda "ra" filtra a los
+  libros que coinciden; búsqueda "zzzz" muestra el mensaje de sin coincidencias;
+  el detalle lista editorial, género, autores y precio.
+- **G-02**: alta de «El Túnel» → `201` (ID 5) con autoría verificada por ID;
+  repetir el ISBN `978-950-00-9999-1` → `409`
+  (`Conflicto de integridad…`).
+- **G-03**: alta de «Lucía Fernández» → `201` (ID 3); repetir su email → `409`.
+- **G-04**: venta del cliente 2 con 2 renglones (Rayuela ×2 + Respiración
+  artificial ×1) → `201`, total `$ 77.000,00`; el detalle se conserva tras
+  recargar la página.
+- **G-05**: `PATCH /libros/1` cambia el precio `25000.00 → 30000.00` (`200`); la
+  venta anterior mantiene `precio_unitario 25000.00` y total `77000.00`.
+- **G-06**: `libro_id`/`cliente_id` inexistente → `409`; renglones con el mismo
+  libro → `422`; el historial sigue con una sola venta.
+- **G-07**: la imagen del frontend se construye (`docker build` → exit 0); la API
+  responde `200` en salud (local y público por HTTPS); tras el redespliegue los
+  libros (5) y la venta (1) siguen disponibles.
 
 ### Notas para G-05 y G-06
 

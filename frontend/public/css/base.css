@@ -74,6 +74,13 @@
   box-sizing: border-box;
 }
 
+/* El atributo hidden debe ganar siempre: las clases con display propio
+   (por ejemplo .paginacion o .venta__total, que usan flex) pisarían el
+   display:none del navegador y dejarían visible un bloque oculto. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   scroll-behavior: smooth;
   color-scheme: light;

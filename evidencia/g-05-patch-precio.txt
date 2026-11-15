@@ -1,0 +1,15 @@
+﻿G-05 - Precio historico (PATCH /libros/{id})
+Origen: http://127.0.0.1:8081  (frontend Nginx -> proxy /api/ -> backend FastAPI)
+
+== 1) Antes: GET /api/libros/1 ==
+{"id":1,"isbn":"978-84-376-0494-7","titulo":"Rayuela","precio":"25000.00","stock":10,"editorial_id":1,"genero_id":1,"editorial":{"id":1,"nombre":"Sudamericana","pais":"Argentina"},"genero":{"id":1,"nombre":"Novela"},"autorias":[{"autor_id":1,"rol":"autor","orden":1,"autor":{"id":1,"nombre":"Julio Cort├ízar","nacionalidad":"Argentina"}}]}
+
+== 2) PATCH /api/libros/1  body={"precio": "30000"} ==
+{"id":1,"isbn":"978-84-376-0494-7","titulo":"Rayuela","precio":"30000","stock":10,"editorial_id":1,"genero_id":1,"editorial":{"id":1,"nombre":"Sudamericana","pais":"Argentina"},"genero":{"id":1,"nombre":"Novela"},"autorias":[{"autor_id":1,"rol":"autor","orden":1,"autor":{"id":1,"nombre":"Julio Cort├ízar","nacionalidad":"Argentina"}}]}
+HTTP 200
+
+== 3) Despues: GET /api/libros/1 (precio actualizado) ==
+{"id":1,"isbn":"978-84-376-0494-7","titulo":"Rayuela","precio":"30000.00","stock":10,"editorial_id":1,"genero_id":1,"editorial":{"id":1,"nombre":"Sudamericana","pais":"Argentina"},"genero":{"id":1,"nombre":"Novela"},"autorias":[{"autor_id":1,"rol":"autor","orden":1,"autor":{"id":1,"nombre":"Julio Cort├ízar","nacionalidad":"Argentina"}}]}
+
+== 4) Venta #1: los importes historicos NO cambian (GET /api/ventas/1) ==
+{"id":1,"cliente_id":2,"fecha":"2026-11-15T23:14:33.801499+00:00","total":"77000.00","cliente":{"id":2,"nombre":"Tom├ís R├¡os","email":"tomas@example.com","perfil":null},"renglones":[{"id":2,"venta_id":1,"libro_id":4,"cantidad":1,"precio_unitario":"27000.00","subtotal":"27000.00","titulo":"Respiraci├│n artificial"},{"id":1,"venta_id":1,"libro_id":1,"cantidad":2,"precio_unitario":"25000.00","subtotal":"50000.00","titulo":"Rayuela"}]}

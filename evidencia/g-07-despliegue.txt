@@ -1,0 +1,28 @@
+﻿G-07 - Despliegue y persistencia de datos
+Origen local: http://127.0.0.1:8081 (frontend Nginx) -> proxy /api/ -> backend
+Backend publico: https://app-grupo2-libreria-backend.ldb9fn.easypanel.host
+
+== 1) Build de la imagen del frontend ==
+docker build -t libreria-frontend ./frontend  -> EXIT 0 (imagen creada)
+
+== 2) Salud de la API ==
+Local   GET /api/health/ready -> {"estado":"listo","database":"conectada"}HTTP 200
+Publico GET /health/ready     -> {"estado":"listo","database":"conectada"}HTTP 200
+
+== ANTES del redespliegue ==
+  libros (total devueltos): 5
+  libro id=5 presente: True
+  ventas (total): 1
+  venta id=1 total: 77000.00
+
+== DESPUES del redespliegue ==
+  health: {"estado":"listo","database":"conectada"}HTTP 200
+  libros (total devueltos): 5
+  libro id=5 ('El Tunel') presente: True
+  ventas (total): 1
+  venta id=1 total: 77000.00
+
+== 3) Redespliegue ==
+docker build (backend y frontend) -> EXIT 0
+docker rm -f + docker run (backend y frontend) ; el contenedor PostgreSQL se conserva
+backend healthy tras redespliegue: True
