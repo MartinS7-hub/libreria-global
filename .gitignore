@@ -1,0 +1,27 @@
+# Entorno y secretos
+.env
+.env.*
+*.env.local
+!.env.example
+
+# Python
+.venv/
+venv/
+ENV/
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node (por si se agrega tooling)
+node_modules/
+
+# Artefactos de entrega y locales
+*.zip
+*.tar
+*.log
+.DS_Store

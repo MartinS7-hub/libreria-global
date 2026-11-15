@@ -1,0 +1,18 @@
+/* Librería El Estante — hoja de estilos.
+   Ejercicio 2: Presentación con CSS y uso adaptable.
+
+   Este archivo es el punto de entrada enlazado desde index.html.
+   El sistema de estilos está modularizado en tres capas, cargadas en el
+   orden que define la cascada:
+
+     base.css         tokens (:root), reset y tipografía
+     layout.css       estructura de página y composición adaptable
+     componentes.css  componentes, foco, responsive y movimiento reducido
+
+   @import debe ir antes de cualquier regla: por eso este archivo solo
+   contiene comentarios e imports.
+*/
+
+@import url("base.css");
+@import url("layout.css");
+@import url("componentes.css");

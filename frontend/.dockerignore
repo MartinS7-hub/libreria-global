@@ -1,0 +1,6 @@
+# Archivos que no deben entrar al contexto de build del frontend.
+.git
+**/.env
+**/.env.*
+**/node_modules
+**/.DS_Store
