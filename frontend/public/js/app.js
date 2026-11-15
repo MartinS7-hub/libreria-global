@@ -220,6 +220,13 @@ function nombresAutores(libro) {
 
 function actualizarPaginacionCatalogo(libros) {
   const { limit, offset } = estado.catalogo;
+
+  // Sin resultados no hay nada que paginar: se oculta el bloque completo.
+  if (libros.length === 0) {
+    ocultar("#catalogo-paginacion");
+    return;
+  }
+
   const pagina = Math.floor(offset / limit) + 1;
   document.getElementById("catalogo-pagina").textContent =
     `Página ${pagina} · ${libros.length} libro(s)`;
@@ -759,6 +766,13 @@ function renderHistorial(ventas) {
 
 function actualizarPaginacionHistorial(ventas) {
   const { limit, offset } = estado.historial;
+
+  // Sin ventas no hay nada que paginar: se oculta el bloque completo.
+  if (ventas.length === 0) {
+    ocultar("#historial-paginacion");
+    return;
+  }
+
   const pagina = Math.floor(offset / limit) + 1;
   document.getElementById("historial-pagina").textContent =
     `Página ${pagina} · ${ventas.length} venta(s)`;
