@@ -1,6 +1,7 @@
 ﻿G-07 - Despliegue y persistencia de datos
 Origen local: http://127.0.0.1:8081 (frontend Nginx) -> proxy /api/ -> backend
 Backend publico: https://app-grupo2-libreria-backend.ldb9fn.easypanel.host
+Frontend publico (EasyPanel): https://app-grupo2-libreria-frontend.ldb9fn.easypanel.host
 
 == 1) Build de la imagen del frontend ==
 docker build -t libreria-frontend ./frontend  -> EXIT 0 (imagen creada)
@@ -8,6 +9,8 @@ docker build -t libreria-frontend ./frontend  -> EXIT 0 (imagen creada)
 == 2) Salud de la API ==
 Local   GET /api/health/ready -> {"estado":"listo","database":"conectada"}HTTP 200
 Publico GET /health/ready     -> {"estado":"listo","database":"conectada"}HTTP 200
+Frontend publico GET /           -> HTTP 200 (pagina cargada)
+Frontend publico GET /api/health/ready -> {"estado":"listo","database":"conectada"}HTTP 200 (verificado 16/11/2026)
 
 == ANTES del redespliegue ==
   libros (total devueltos): 5
